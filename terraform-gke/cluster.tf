@@ -1,28 +1,34 @@
-# module "gke" {
-#   source = "terraform-google-modules/kubernetes-engine/google//modules/private-cluster"
+resource "google_service_account" "gke" {
+  account_id   = var.account_id
+  display_name = "GKE Service Account"
+  project      = var.project
+}
 
-#   project_id = var.project
-#   name       = "${var.cluster_name}-${var.env_name}"
+resource "google_container_cluster" "primary" {
+  project            = var.project
+  name               = var.cluster_name
+  location           = var.region
+  initial_node_count = 1
+  
+  ip_allocation_policy {
+    
+  }
 
-#   regional = true
-#   region   = var.region
+  node_config {
+    # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
+    service_account = google_service_account.gke.email
+    machine_type    = var.machine_type
 
-#   network    = module.network.network_name
-#   subnetwork = module.network.subnets_names[0]
+    oauth_scopes = [
+      "https://www.googleapis.com/auth/cloud-platform"
+    ]
+  }
 
-#   ip_range_pods     = var.pods_secondary_ip_range
-#   ip_range_services = var.services_secondary_ip_range
+  network          = module.vpc.network_name
+  subnetwork       = module.vpc.subnets_names[0]
+  enable_autopilot = var.enable_autopilot
 
-#   node_pools = [
-#     {
-#       name               = "default-node-pool"
-#       machine_type       = "e2-medium"
-#       min_count          = var.min_node_count
-#       max_count          = var.max_node_count
-#       disk_size_gb       = var.disk_size_gb
-#       auto_repair        = true
-#       auto_upgrade       = true
-#       initial_node_count = 1
-#     },
-#   ]
-# }
+  depends_on = [
+    google_service_account.gke
+  ]
+}

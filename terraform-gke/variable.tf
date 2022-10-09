@@ -8,14 +8,20 @@ variable "region" {
   type        = string
 }
 
+variable "account_id" {
+  description = "The ID of the service account to create"
+  type        = string
+}
+
 variable "cluster_name" {
   description = "The name of the cluster"
   type        = string
 }
 
-variable "env_name" {
-  description = "The name of the environment"
+variable "machine_type" {
+  description = "The machine types to use for the cluster"
   type        = string
+  default     = "e2-medium"
 }
 
 variable "network_name" {
@@ -43,40 +49,8 @@ variable "subnet_2_cidr" {
   type        = string
 }
 
-variable "pods_secondary_ip_range_name" {
-  description = "The name of the pods secondary IP range"
-  type        = string
-}
-
-variable "pods_secondary_ip_range" {
-  description = "The IP range of the pods secondary IP range"
-  type        = string
-}
-
-variable "services_secondary_ip_range_name" {
-  description = "The name of the services secondary IP range"
-  type        = string
-}
-
-variable "services_secondary_ip_range" {
-  description = "The IP range of the services secondary IP range"
-  type        = string
-}
-
-variable "min_node_count" {
-  description = "The minimum number of nodes in the cluster"
-  type        = number
-  default     = 1
-}
-
-variable "max_node_count" {
-  description = "The maximum number of nodes in the cluster"
-  type        = number
-  default     = 3
-}
-
-variable "disk_size_gb" {
-  description = "The size of the disk in GB"
-  type        = number
-  default     = 30
+variable "enable_autopilot" {
+  description = "Enable autopilot mode"
+  type        = bool
+  default     = false
 }

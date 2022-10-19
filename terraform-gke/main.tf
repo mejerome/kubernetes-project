@@ -1,11 +1,7 @@
-# module "gke_auth" {
-#   source       = "terraform-google-modules/kubernetes-engine/google//modules/auth"
-#   depends_on   = [module.gke]
-#   project_id   = var.project
-#   location     = module.gke.location
-#   cluster_name = module.gke.name
-# }
-# resource "local_file" "kubeconfig" {
-#   content  = module.gke_auth.kubeconfig_raw
-#   filename = "kubeconfig-${var.env_name}"
-# }
+output "cluster_endpoint" {
+  value = google_container_cluster.primary.endpoint
+}
+
+output "cluster_name" {
+  value = google_container_cluster.primary.name
+}

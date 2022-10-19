@@ -18,6 +18,11 @@ variable "cluster_name" {
   type        = string
 }
 
+variable "node_count" {
+  description = "The number of nodes to create in the cluster"
+  type        = number
+}
+
 variable "machine_type" {
   description = "The machine types to use for the cluster"
   type        = string

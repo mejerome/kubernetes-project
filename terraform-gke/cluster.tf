@@ -1,33 +1,15 @@
-resource "google_service_account" "gke" {
-  account_id   = var.account_id
-  display_name = "GKE Service Account"
-  project      = var.project
-}
+module "gke" {
+  source = "terraform-google-modules/kubernetes-engine/google//modules/beta-autopilot-public-cluster"
 
-resource "google_container_cluster" "primary" {
-  project                  = var.project
-  name                     = var.cluster_name
-  location                 = var.region
-  remove_default_node_pool = true
+  project_id = var.project
+  name       = var.cluster_name
+  region     = var.region
 
-  initial_node_count = 1
-}
+  network    = module.vpc.network_name
+  subnetwork = module.vpc.subnets_names[0]
 
-resource "google_container_node_pool" "primary" {
-  name       = "my-node-pool"
-  location   = var.region
-  project    = var.project
-  cluster    = google_container_cluster.primary.id
-  node_count = var.node_count
-
-  node_config {
-    preemptible  = true
-    machine_type = var.machine_type
-
-    # Google recommends custom service accounts that have cloud-platform scope and permissions granted via IAM Roles.
-    service_account = google_service_account.gke.email
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform"
-    ]
-  }
+  ip_range_pods                   = "gke-pods"
+  ip_range_services               = "gke-services"
+  release_channel                 = "REGULAR"
+  enable_vertical_pod_autoscaling = true
 }

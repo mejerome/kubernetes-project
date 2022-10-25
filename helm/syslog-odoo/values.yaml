@@ -1,0 +1,19 @@
+image:
+  repository: bitnami/odoo
+  tag: 15-debian-11
+
+odooEmail: "jerome@syslogsolution.com"
+
+resources:
+  requests:
+    memory: 1Gi
+    cpu: 1000m
+  limits:
+    memory: 4Gi
+    cpu: 2000m
+
+postgresql:
+  enabled: true
+  postgresqlUsername: odoo
+  postgresqlDatabase: odoo
+

@@ -16,4 +16,3 @@ postgresql:
   enabled: true
   postgresqlUsername: odoo
   postgresqlDatabase: odoo
-

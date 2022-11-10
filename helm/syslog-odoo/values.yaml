@@ -1,16 +1,14 @@
-image:
-  repository: bitnami/odoo
-  tag: 15-debian-11
+# helm install syslog-odoo -f values.yaml bitnami/odoo --version 23.0.0 -n syslog-odoo
 
 odooEmail: "jerome@syslogsolution.com"
 
 resources:
   requests:
-    memory: 1Gi
-    cpu: 1000m
+    memory: 2Gi
+    cpu: 2000m
   limits:
     memory: 4Gi
-    cpu: 2000m
+    cpu: 4000m
 
 postgresql:
   enabled: true

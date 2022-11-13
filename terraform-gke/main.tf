@@ -1,12 +1,16 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "~> 4.0"
-    }
-    kubernetes = {
-      source = "hashicorp/kubernetes"
-    }
-  }
-  required_version = ">= 0.13"
+provider "google" {
+  project = var.project
+  region  = var.region
+}
+
+# Retrieve an access token as the Terraform runner
+data "google_client_config" "provider" {}
+
+
+provider "kubernetes" {
+  host  = "https://${module.gke.endpoint}"
+  token = data.google_client_config.provider.access_token
+  cluster_ca_certificate = base64decode(
+    module.gke.ca_certificate
+  )
 }

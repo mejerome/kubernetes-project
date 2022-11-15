@@ -1,22 +1,40 @@
 # helm install syslog-odoo -f values.yaml bitnami/odoo --version 23.0.0 -n syslog-odoo
-
+odooUsername: odoo
 odooEmail: "jerome@syslogsolution.com"
 adminPassword: "admin"
-
 service:
-  ports:
-    http: 8069
-
+  type: ClusterIP
+  port: 8069
 resources:
   requests:
     memory: 2Gi
-    cpu: 2000m
-  limits:
-    memory: 4Gi
-    cpu: 4000m
-
+    cpu: 1000m
+persistentVolume:
+  enabled: true
+  storageClass: "standard"
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi
 postgresql:
   enabled: true
-  architecture: standalone
-  postgresqlUsername: odoo
-  postgresqlDatabase: odoo
+  postgresqlPassword: "admin"
+  persistence:
+    enabled: true
+    storageClass: "standard"
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+livelinessProbe:
+  enabled: true
+  initialDelaySeconds: 300
+  periodSeconds: 30
+  timeoutSeconds: 5
+  failureThreshold: 6
+  successThreshold: 1
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 300
+  periodSeconds: 30
+  timeoutSeconds: 5
+  failureThreshold: 6
+  successThreshold: 1

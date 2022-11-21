@@ -1,0 +1,11 @@
+auth:
+  enablePostgresUser: true
+  postgresPassword: "strongpassword"
+  username: "bn_odoo"
+  password: "password"
+  database: "odoo_database"
+
+primary:
+  persistence:
+    enabled: true
+    existingClaim: "postgresql-data-claim"

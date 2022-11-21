@@ -2,39 +2,19 @@
 odooUsername: odoo
 odooEmail: "jerome@syslogsolution.com"
 adminPassword: "admin"
-service:
-  type: ClusterIP
-  port: 8069
 resources:
   requests:
     memory: 2Gi
     cpu: 1000m
-persistentVolume:
-  enabled: true
-  storageClass: "standard"
-  accessModes:
-    - ReadWriteOnce
-  size: 10Gi
+
 postgresql:
-  enabled: true
-  postgresqlPassword: "admin"
-  persistence:
-    enabled: true
-    storageClass: "standard"
-    accessModes:
-      - ReadWriteOnce
-    size: 10Gi
-livelinessProbe:
-  enabled: true
-  initialDelaySeconds: 300
-  periodSeconds: 30
-  timeoutSeconds: 5
-  failureThreshold: 6
-  successThreshold: 1
-readinessProbe:
-  enabled: true
-  initialDelaySeconds: 300
-  periodSeconds: 30
-  timeoutSeconds: 5
-  failureThreshold: 6
-  successThreshold: 1
+  enabled: false
+
+externalDatabase:
+  host: "odoo-db-postgresql.default.svc.cluster.local"
+  port: 5432
+  user: bn_odoo
+  password: "strongpassword"
+  database: odoo_database
+  postgresqlPostgresUser: "bn_odoo"
+  postgresqlPostgresPassword: "password"

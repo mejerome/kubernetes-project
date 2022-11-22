@@ -1,0 +1,14 @@
+{
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 3687,
+      "driver": "PostgreSQL",
+      "name": "rancher-psql",
+      "database": "postgres",
+      "username": "appuser",
+      "password": "strongpassword"
+    }
+  ]
+}

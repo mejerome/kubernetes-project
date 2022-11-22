@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: syslog-odoo
+  labels:
+    app: odoo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: odoo
+  template:
+    metadata:
+      labels:
+        app: odoo
+    spec:
+      containers:
+      - name: syslog-odoo
+        image: odoo:16
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: HOST
+          value: syslog-postgres
+        - name: PORT
+          value: "5432"
+        - name: USER
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-secret
+              key: POSTGRES_USER
+        - name: PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: postgres-secret
+              key: POSTGRES_PASSWORD
+        ports:
+        - containerPort: 8069
+      #   volumeMounts:
+      #   - name: odoo-data
+      #     mountPath: /var/lib/odoo
+      # volumes:
+      # - name: odoo-data
+      #   persistentVolumeClaim:
+      #     claimName: odoo-pvc
